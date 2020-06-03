@@ -1,0 +1,107 @@
+body {
+    font-family: sans-serif;
+  }
+  a {
+    color: #369;
+  }
+  .note {
+    width: 500px;
+    margin: 50px auto;
+    font-size: 1.1em;
+    color: #333;
+    text-align: justify;
+  }
+  .drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 20px;
+    width: fit-content;
+    height: fit-content;
+    margin: 50px auto;
+    padding: 20px;
+  }
+  .drop-area.highlight {
+    border-color: purple;
+  }
+  p {
+    margin-top: 0;
+  }
+  .my-form {
+    margin-bottom: 10px;
+  }
+
+  .gallery {
+    margin-top: 10px;
+    overflow-y: scroll;
+    max-height: 480px;
+  }
+
+  .gallery img {
+    width: 150px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .gallery canvas {
+    width: 150px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 10px;
+    background: #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+  }
+  .button:hover {
+    background: #ddd;
+  }
+  #fileElemClassA {
+    display: none;
+  }
+  #fileElemClassB {
+    display: none;
+  }
+  #fileElemTest{
+    display: none;
+  }
+  input[type=text]{
+    margin-left: 2px;
+    border: transparent;
+    font-size: 1.1em;
+    color: cornflowerblue;
+    text-align: center;
+  }
+
+  input[type="text"]:hover{
+    outline: none;
+    box-shadow: 0px 0px 5px #61C5FA;
+    border:1px solid #5AB0DB;
+    border-radius:0;
+  }    
+
+  .train_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: pointer;
+    vertical-align: center;
+  }
+
+  .text_title{
+    text-align: center;
+    font-size: large;
+    color: darkgreen;
+  }
+

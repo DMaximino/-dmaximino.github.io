@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism-okaidia.min.css"/>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="index.css">
+
+  <title>Create your own image classifier</title>
+</head>
+<body>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+  <script src="dataset.js"></script>
+  <script src="image_processing.js"></script>
+  <script>
+    function search(ele) {
+    if(event.key === 'Enter') 
+    {
+      event.preventDefault();     
+      return false;
+    }
+    }
+  </script>
+  <!-- NavBar-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="sample/sample_index.html">Tips</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contacts.html">Contacts</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Title -->
+  <div style="background:#4CAF50 !important; color: aliceblue;" class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Create an image classifier</h1>
+      <p class="lead">Follow the next steps to create a binary image classifier with your own data that you can easily add to your web page.</p>
+    </div>
+  </div>
+  <!-- Steps -->
+  <div class="card ml-3 mr-3 mb-3">
+    <div class="card-body">
+      <h5 class="card-title">1. Add images for each class.</h5>
+      <p class="card-text">Add your own images of each class to the respective box and name it! No images are uploaded, all the processing is done in your machine.</p>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <div class="drop-area" id="drop-area-class-a">
+          <form class="my-form">
+            <p>Drop images of class:    
+              <input type="text" placeholder="A" value="A" id="myInputA" onkeypress="search(this)">
+            </p>
+            <input type="file" id="fileElemClassA" multiple accept="image/*" onchange="handleFiles(this.files, 'drop-area-class-a')">
+            <label class="button" for="fileElemClassA">Select some files</label>
+          </form>
+          <progress id="progress-bar-class-a" max=100 value=0 ></progress>
+          <div class="gallery" id="gallery-class-a"></div>
+        </div>
+      </div>
+      <div class="col text-center">
+        <div class="drop-area" id="drop-area-class-b">
+          <form class="my-form">
+          <p>Drop images of class:    
+            <input type="text" placeholder="B" value="B" id="myInputB" onkeypress="search(this)">
+          </p>
+          <input type="file" id="fileElemClassB" multiple accept="image/*" onchange="handleFiles(this.files, 'drop-area-class-b')">
+          <label class="button" for="fileElemClassB">Select some files</label>
+          </form>
+          <progress id="progress-bar-class-b" max=100 value=0></progress>
+        <div class="gallery" id="gallery-class-b"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="card ml-3 mr-3 mb-3">
+      <div class="card-body">
+        <h5 class="card-title">2. Train a model.</h5>
+        <p class="card-text">Press the button and wait until you get an alert saying your training is done. You can retrain the times you want after adding new images in the previous step.  </p>
+      </div>
+      <button class="train_button" type="button" id="train" onclick="doTraining()">Train your classifier!</button>
+    </div>
+
+    <div class="card ml-3 mr-3 mb-3">
+      <div class="card-body">
+        <h5 class="card-title">3. Test the model.</h5>
+        <p class="card-text">Eyeball the results in some test images, for that all you have to do is drop them in the box. You should test with images different from the ones you trained with to make sure your classifier can deal with unseen data!</p>
+      </div>
+      <div class="drop-area text-center" id="drop-area-test">
+        <form class="my-form">
+        <p>Drop images of both classes.</p>
+        <input type="file" id="fileElemTest" multiple accept="image/*" onchange="handleFiles(this.files, 'drop-area-test')">
+        <label class="button" for="fileElemTest">Select some files</label>
+        </form>
+        <progress id="progress-bar-test" max=100 value=0></progress>
+      <div class="gallery" id="gallery-test">
+      </div>
+    </div>
+    </div>
+
+    <div class="card ml-3 mr-3 mb-3">
+      <div class="card-body">
+        <h5 class="card-title">4. Download the model & sample code.</h5>
+        <p class="card-text">Once you are satisfied with your model download it and the sample code that you can use to easily integrate it in your web page. 
+          Allow download of multiple files and save them all in the same directory. Do not change the names.</p>
+      </div>
+      <div class="row text-center">
+        <div class="col">
+          <a href="sample/classifier.js" download>
+            <button class="train_button" type="button"> Download library</button>
+          </a> 
+        </div>
+        <div class="col">
+          <a href="sample/sample_index.html" download>
+            <button class="train_button" type="button"> Download sample web page</button>
+          </a>
+        </div>
+        <div class="col">
+          <button class="train_button" type="button" id="saveModel" onclick="saveModel()" >Download model</button>
+        </div>
+    </div>
+  </div>
+
+  </div>
+  <div class="card-group p-0 mt-5 mb-5">
+            <div style="background:#272822 !important; color: aliceblue;" class="card rounded-0">
+              <div class="card-header">HTML</div>
+                <div class="card-body">
+                  <pre class="language-html">
+                    <code class="language-html">
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;!-- Tensorflow library --&gt;   
+    &lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"&gt; &lt;/script&gt;
+    &lt;!-- Library with the methods needed for classification --&gt;   
+    &lt;script src="classifier.js"&gt; &lt;/script&gt;
+    &lt;h1&gt;Example page showing how to use the image classifier&lt;/h1&gt;
+
+    &lt;p>Prediction:&lt;/p&gt;
+    &lt;!-- The image you want to classify --&gt;   
+    &lt;img id="myImage" src="" &gt;
+    &lt;div id="pred"&gt;&lt;/div&gt;
+    &lt;button type="button" id="predict" onclick="doPredict()"&gt;Predict&lt;/button&gt;
+    &lt;script src="index.js"&gt; &lt;/script&gt;	
+&lt;/body&gt;
+&lt;/html&gt;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+
+          <div style="background:#272822 !important; color: aliceblue;" class="card rounded-0">
+                <div class="card-header">JS</div>
+                <div class="card-body">
+                    <pre class="language-javascript">
+                      <code class="language-javascript">
+async function doPredict()
+{
+  testImage = document.getElementById("testImage");
+  // Predict takes as input an img element and returns 0 or 1 
+  // that correspond to your classes A and B respectively.
+  const classId = await predict(testImage);
+  var predictionText = "";
+  // Replace this with your classes names
+  switch(classId){
+      case 0:
+          predictionText = "A";
+          break;
+      case 1:
+          predictionText = "B";
+          break;
+              
+  }            
+  document.getElementById("pred").innerText = predictionText;
+}
+                      </code>
+                    </pre>
+                </div>
+            </div>
+</div>  
+
+<footer class="footer mt-3 mb-3">
+  <div class="container">
+    <span class="text-muted">                
+    </span>
+    <a href="mailto:diogomaximino@gmail.com"><small style="color:grey" class="fa fa-lg fa-envelope-square">  </small></a>
+    <a href="https://github.com/DMaximino"><small style="color:grey" class="fa fa-lg fa-github">  </small></a>
+    <a href="https://www.linkedin.com/in/diogomaximino/"><small style="color:grey" class="fa fa-lg fa-linkedin-square">  </small></a>
+
+  </div>
+</footer>
+
+  </body>
+  
+  <script src="index.js"> </script>	
+
+  </html>

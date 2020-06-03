@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <!-- Tensorflow library-->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+    <!-- Library with some methods you need to initialize the classifier and make predictions-->
+    <script src="classifier.js"> </script>	
+    <script>
+          async function doPredict()
+          {
+            testImage = document.getElementById("testImage");
+            // Predict takes as input an img element and returns 0 or 1 that correspond to your classes A and B respectively.
+            const classId = await predict(testImage);
+            var predictionText = "";
+            // Replace this with your classes names
+            switch(classId){
+                case 0:
+                    predictionText = "A";
+                    break;
+                case 1:
+                    predictionText = "B";
+                    break;
+                        
+            }            
+            document.getElementById("pred").innerText = predictionText;
+          }
+    </script>
+    <h1>Example page showing how to use the image classifier</h1>
+
+    <p>Prediction:</p>
+    <!-- Your image -->
+    <img id="testImage" src="..." width="500">
+    <div id="pred"></div>
+    <button class="train_button" type="button" id="predict" onclick="doPredict()" >Predict</button>
+</body>
+</html>
