@@ -1,16 +1,12 @@
 /**
  * Gets an image as input and normalizes it between -1 and 1.
  * Returns a batched image (1-element batch) of shape [1, w, h, c].
- * @param {} img An image element.
+ * @param {HTMLImageElement} img An image element.
  */
 function convertToTensor4D(img) {
     return tf.tidy(() => {
     // Reads the image as a Tensor from the image element.
     const tensorImage = tf.browser.fromPixels(img);
-
-    // Crop the image so we're using the center square of the rectangular
-    // webcam.
-    //const croppedImage = this.cropImage(tensorImage);
 
     resized = tf.image.resizeBilinear(tensorImage, [224,224]);
 

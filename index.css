@@ -99,6 +99,22 @@ body {
     vertical-align: center;
   }
 
+  .train_button:disabled {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: default;
+    vertical-align: center;
+    opacity: 0.5;
+  }
+
   .text_title{
     text-align: center;
     font-size: large;

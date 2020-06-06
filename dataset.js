@@ -1,8 +1,16 @@
+/**
+ * Class that handles the dataset used to train an image classification model.
+ */
 class Dataset {
     constructor() {
       this.labels = []
     }
-  
+    
+    /**
+     * Adds and example image to the dataset and its respective label.
+     * @param {*} example 
+     * @param {*} label 
+     */
     addExample(example, label) {
       if (this.xs == null) {
         this.xs = tf.keep(example);
@@ -15,6 +23,10 @@ class Dataset {
       }
     }
     
+    /**
+     * Encodes the labels of the images to one hot encoding.
+     * @param {int} numClasses 
+     */
     encodeLabels(numClasses) {
       for (var i = 0; i < this.labels.length; i++) {
         if (this.ys == null) {
