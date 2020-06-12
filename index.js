@@ -27,23 +27,23 @@ function updateProgress(progressBar) {
 let dropAreaClassA = document.getElementById("drop-area-class-a")
 let dropAreaClassB = document.getElementById("drop-area-class-b")
 
-// Prevent default drag behaviors
-;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  dropAreaClassA.addEventListener(eventName, preventDefaults, false)
-  dropAreaClassB.addEventListener(eventName, preventDefaults, false)    
-  document.body.addEventListener(eventName, preventDefaults, false)
-})
+  // Prevent default drag behaviors
+  ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropAreaClassA.addEventListener(eventName, preventDefaults, false)
+    dropAreaClassB.addEventListener(eventName, preventDefaults, false)
+    document.body.addEventListener(eventName, preventDefaults, false)
+  })
 
-// Highlight drop area when item is dragged over it
-;['dragenter', 'dragover'].forEach(eventName => {
-  dropAreaClassA.addEventListener(eventName, highlight, false)
-  dropAreaClassB.addEventListener(eventName, highlight, false)
-})
+  // Highlight drop area when item is dragged over it
+  ;['dragenter', 'dragover'].forEach(eventName => {
+    dropAreaClassA.addEventListener(eventName, highlight, false)
+    dropAreaClassB.addEventListener(eventName, highlight, false)
+  })
 
-;['dragleave', 'drop'].forEach(eventName => {
-  dropAreaClassA.addEventListener(eventName, unhighlight, false)
-  dropAreaClassB.addEventListener(eventName, unhighlight, false)
-})
+  ;['dragleave', 'drop'].forEach(eventName => {
+    dropAreaClassA.addEventListener(eventName, unhighlight, false)
+    dropAreaClassB.addEventListener(eventName, unhighlight, false)
+  })
 
 // Handle dropped files
 dropAreaClassA.addEventListener('drop', handleDrop, false)
@@ -53,8 +53,7 @@ dropAreaClassB.addEventListener('drop', handleDrop, false)
  * Prevents defaults.
  * @param {*} e Data of the event.
  */
-function preventDefaults (e) 
-{
+function preventDefaults(e) {
   e.preventDefault()
   e.stopPropagation()
 }
@@ -95,15 +94,15 @@ function handleDrop(e) {
 async function handleFiles(files, id) {
   files = [...files]
 
-  if(id == 'drop-area-class-a'){
+  if (id == 'drop-area-class-a') {
     initializeProgress(files.length, progressBarClassA)
     files.forEach(previewAndUploadFileClassA)
   }
-  else if(id == 'drop-area-class-b'){
+  else if (id == 'drop-area-class-b') {
     initializeProgress(files.length, progressBarClassB)
     files.forEach(previewAndUploadFileClassB)
   }
-  else if(id =='drop-area-test'){
+  else if (id == 'drop-area-test') {
     initializeProgress(files.length, progressBarTest)
     files.forEach(previewFileAndPredict)
   }
@@ -115,7 +114,7 @@ async function handleFiles(files, id) {
  * @param {Int} i 
  * @param {Array} arr 
  */
-function previewAndUploadFileClassA(file, i, arr){
+function previewAndUploadFileClassA(file, i, arr) {
   previewFile(file, i, arr, document.getElementById('gallery-class-a'))
   uploadFile(file, 0, updateProgress, progressBarClassA)
 }
@@ -126,7 +125,7 @@ function previewAndUploadFileClassA(file, i, arr){
  * @param {Int} i 
  * @param {Array} arr 
  */
-function previewAndUploadFileClassB(file, i, arr){
+function previewAndUploadFileClassB(file, i, arr) {
   previewFile(file, i, arr, document.getElementById('gallery-class-b'))
   uploadFile(file, 1, updateProgress, progressBarClassB)
 }
@@ -141,7 +140,7 @@ function previewAndUploadFileClassB(file, i, arr){
 function previewFile(file, i, arr, id) {
   let reader = new FileReader()
   reader.readAsDataURL(file)
-  reader.onloadend = function() {
+  reader.onloadend = function () {
     let img = document.createElement('img')
     img.src = reader.result
     id.appendChild(img)
@@ -161,14 +160,14 @@ function uploadFile(file, label, callback) {
   args = arguments;
   let reader = new FileReader()
   reader.readAsDataURL(file)
-  reader.onloadend = function() {
+  reader.onloadend = function () {
     var img = document.createElement('img');
     img.src = reader.result
     //document.body.appendChild(img);
     img.onload = function () {
       addExampleToDataset(img, label)
       callback(args[3]);
-    } 
+    }
   }
 
 }
@@ -182,39 +181,40 @@ async function previewFileAndPredict(file) {
 
   let reader = new FileReader()
   reader.readAsDataURL(file)
-  reader.onloadend = async function() {
+  reader.onloadend = async function () {
     let img = document.createElement('img')
     img.src = reader.result
     img.onload = async function () {
       const classId = await predict(img)
       var predictionText = "";
-      switch(classId){
+      switch (classId) {
         case 0:
           predictionText = document.getElementById("myInputA").value;
           break;
         case 1:
           predictionText = document.getElementById("myInputB").value;
           break;
-                    
+
       }
       let id = document.getElementById('gallery-test');
-      var pred = document.createElement("P");                 
-      var t = document.createTextNode(predictionText);     
-      pred.appendChild(t);                                       
+      var pred = document.createElement("P");
+      var t = document.createTextNode(predictionText);
+      pred.appendChild(t);
       var canvas = document.createElement('canvas');
       canvas.width = 150;
       canvas.height = 150;
       var ctx = canvas.getContext('2d');
-      ctx.drawImage(img,0,0,img.width,img.height,0,0,150,150);
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 150, 150);
       ctx.strokeStyle = 'white';
       ctx.font = "20px Arial";
-      ctx.strokeText(predictionText, 5,130)
-      ctx.fillText(predictionText, 5,130)
+      ctx.strokeText(predictionText, 5, 130)
+      ctx.fillText(predictionText, 5, 130)
       id.appendChild(canvas);
-      updateProgress(progressBarTest);  
+      updateProgress(progressBarTest);
     }
   }
 }
+
 
 // Training interface
 
@@ -257,13 +257,17 @@ function disableButton(buttonId) {
 function callbackTrainnigEnd() {
   enableTrainButton();
   enableButton("saveModel");
+  $(document).ready(function(){
+    $("#myToast").toast('show');
+  });
+ 
 }
 
 /**
  * Starts the training and updates the interface accordingly.
  */
-function doTraining(){
-  if(areExamplesInDataset() == false)
+function doTraining() {
+  if (areExamplesInDataset() == false)
     return
 
   disableTrainButton();

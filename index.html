@@ -44,7 +44,7 @@
           <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Tips</a>
+          <a class="nav-link" href="tips.html">Tips</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contacts.html">Contacts</a>
@@ -53,7 +53,7 @@
     </div>
   </nav>
   <!-- Title -->
-  <div style="background:#4CAF50 !important; color: aliceblue;" class="jumbotron jumbotron-fluid">
+  <div style="background:#003366 !important; color: aliceblue;" class="jumbotron jumbotron-fluid">
     <div class="container">
       <h1 class="display-4">Create an image classifier</h1>
       <p class="lead">Follow the next steps to create a binary image classifier with your own data that you can easily add to your web page.</p>
@@ -97,8 +97,20 @@
     <div class="card ml-3 mr-3 mb-3">
       <div class="card-body">
         <h5 class="card-title">2. Train a model.</h5>
-        <p class="card-text">Press the button and wait until you get an alert saying your training is done. You can retrain the times you want after adding new images in the previous step.  </p>
+        <p class="card-text">Press the button and wait until you get an notification saying your training is done. You can retrain the times you want after adding new images in the previous step.  </p>
       </div>
+          <!-- Notification -->
+          <div class="toast ml-5" id="myToast" style="position: top; color: aliceblue; background-color: cornflowerblue;" aria-hidden="true"  data-autohide="false">
+            <div class="toast-header">
+                <strong class="mr-auto"><i class="fa fa-grav"></i> Train is complete!</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                <div>You have successfully trained your image classifier</div>
+            </div>
+          </div>
       <button class="train_button" type="button" id="train" onclick="doTraining()">Train your classifier!</button>
     </div>
 
@@ -123,7 +135,7 @@
       <div class="card-body">
         <h5 class="card-title">4. Download the model & sample code.</h5>
         <p class="card-text">Once you are satisfied with your model download it and the sample code that you can use to easily integrate it in your web page. 
-          Allow download of multiple files and save them all in the same directory. Do not change the names.</p>
+          Allow download of multiple files and save them all in the same directory. Do not change the names. The only code you will need to add to your page is also written bellow.</p>
       </div>
       <div class="row text-center">
         <div class="col">
@@ -201,6 +213,7 @@ async function doPredict()
                 </div>
             </div>
 </div>  
+
 
 <footer class="footer mt-3 mb-3">
   <div class="container">
